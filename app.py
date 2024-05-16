@@ -35,7 +35,7 @@ def api_all():
 def get_bigquery_data():
     client = bigquery.Client()
     query = """
-        SELECT * FROM `projectcloudmasterid.books`
+        SELECT * FROM `projectcloudmasterid.books.books`
         LIMIT 10
     """
     query_job = client.query(query)  # Execută interogarea
