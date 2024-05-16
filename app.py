@@ -46,6 +46,28 @@ def get_bigquery_data():
     rows = [dict(row) for row in results]
 
     return jsonify(rows)
+
+# Endpoint pentru obținerea cărților din BigQuery grupate dupa autor
+@app.route('/api/v2/resources/books/by-author', methods=['GET'])
+def get_books_by_author():
+    query_parameters = request.args
+    author = query_parameters.get('author')
+
+    if not author:
+        return "<p>Parametrul 'author' trebuie specificat în URL.</p>", 400
+
+    db_path = os.path.join('db', 'books.db')    
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+
+    query = f"SELECT * FROM books WHERE author=?"
+    results = cur.execute(query, (author,)).fetchall()
+
+    if not results:
+        return jsonify({'message': 'Nu s-au găsit cărți scrise de acest autor.'}), 404
+
+    return jsonify(results)
     
 @app.errorhandler(404)
 def page_not_found(e):
