@@ -56,18 +56,20 @@ def get_books_by_author():
     if not author:
         return "<p>Parametrul 'author' trebuie specificat în URL. Exemplu: /api/v2/resources/books/by-author?author=David Brin</p>", 400
 
-    db_path = os.path.join('db', 'books.db')    
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = dict_factory
-    cur = conn.cursor()
+    client = bigquery.Client()
+    query = f"""
+        SELECT * FROM `projectcloudmasterid.books.books`
+        WHERE author = '{author}'
+    """
+    query_job = client.query(query)
+    results = query_job.result()
 
-    query = f"SELECT * FROM books WHERE author=?"
-    results = cur.execute(query, (author,)).fetchall()
+    rows = [dict(row) for row in results]
 
-    if not results:
+    if not rows:
         return jsonify({'message': f'Nu s-au găsit cărți scrise de autorul {author}.'}), 404
 
-    return jsonify(results)
+    return jsonify(rows)
 
 # Endpoint pentru obținerea cărților din BigQuery grupate dupa an
 @app.route('/api/v2/resources/books/by-year', methods=['GET'])
