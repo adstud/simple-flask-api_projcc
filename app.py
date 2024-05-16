@@ -30,6 +30,22 @@ def api_all():
 
     return jsonify(all_books)
 
+# Endpoint pentru obținerea tuturor cărților din BigQuery
+@app.route('/api/v2/resources/bigquery-data', methods=['GET'])
+def get_bigquery_data():
+    client = bigquery.Client()
+    query = """
+        SELECT * FROM `projectcloudmasterid.datasetcarti.books`
+        LIMIT 10
+    """
+    query_job = client.query(query)  # Execută interogarea
+    results = query_job.result()  # Așteaptă finalizarea interogării
+
+    # Convertirea rezultatelor într-o listă de dicționare pentru a le serializa ca JSON
+    rows = [dict(row) for row in results]
+
+    return jsonify(rows)
+    
 @app.errorhandler(404)
 def page_not_found(e):
     return "<h1>404</h1><p>The resource could not be found</p>", 404
