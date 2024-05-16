@@ -54,7 +54,7 @@ def get_books_by_author():
     author = query_parameters.get('author')
 
     if not author:
-        return "<p>Parametrul 'author' trebuie specificat în URL.</p>", 400
+        return "<p>Parametrul 'author' trebuie specificat în URL. Exemplu: /api/v2/resources/books/by-author?author=David Brin</p>", 400
 
     db_path = os.path.join('db', 'books.db')    
     conn = sqlite3.connect(db_path)
@@ -65,7 +65,7 @@ def get_books_by_author():
     results = cur.execute(query, (author,)).fetchall()
 
     if not results:
-        return jsonify({'message': 'Nu s-au găsit cărți scrise de acest autor.'}), 404
+        return jsonify({'message': f'Nu s-au găsit cărți scrise de autorul {author}.'}), 404
 
     return jsonify(results)
     
