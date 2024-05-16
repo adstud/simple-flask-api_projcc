@@ -68,7 +68,31 @@ def get_books_by_author():
         return jsonify({'message': f'Nu s-au găsit cărți scrise de autorul {author}.'}), 404
 
     return jsonify(results)
-    
+
+# Endpoint pentru obținerea cărților din BigQuery grupate dupa an
+@app.route('/api/v2/resources/books/by-year', methods=['GET'])
+def get_books_by_year():
+    query_parameters = request.args
+    published_year = query_parameters.get('published_year')
+
+    if not published_year:
+        return "<p>Parametrul 'published_year' trebuie specificat în URL. Exemplu: /api/v2/resources/books/by-year?published_year=2005</p>", 400
+
+    client = bigquery.Client()
+    query = f"""
+        SELECT * FROM `projectcloudmasterid.books.books`
+        WHERE published LIKE '%{published_year}%'
+    """
+    query_job = client.query(query)
+    results = query_job.result()
+
+    rows = [dict(row) for row in results]
+
+    if not rows:
+        return jsonify({'message': f'Nu s-au găsit cărți publicate în anul {published_year}.'}), 404
+
+    return jsonify(rows)
+
 @app.errorhandler(404)
 def page_not_found(e):
     return "<h1>404</h1><p>The resource could not be found</p>", 404
