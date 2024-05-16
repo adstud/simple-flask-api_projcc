@@ -81,11 +81,16 @@ def get_books_by_year():
         return "<p>Parametrul 'published_year' trebuie specificat în URL. Exemplu: /api/v2/resources/books/by-year?published_year=2005</p>", 400
 
     client = bigquery.Client()
-    query = f"""
+    query = """
         SELECT * FROM `projectcloudmasterid.books.books`
-        WHERE published LIKE '%{published_year}%'
+        WHERE CAST(published AS STRING) LIKE @published_year
     """
-    query_job = client.query(query)
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ScalarQueryParameter("published_year", "STRING", published_year)
+        ]
+    )
+    query_job = client.query(query, job_config=job_config)
     results = query_job.result()
 
     rows = [dict(row) for row in results]
