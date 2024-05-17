@@ -104,6 +104,7 @@ def get_books_by_year():
 def page_not_found(e):
     return "<h1>404</h1><p>The resource could not be found</p>", 404
 
+#teoretic astea ar putea fi scoase
 @app.route('/api/v2/resources/books', methods=['GET'])
 def api_filter():
     query_parameters = request.args
@@ -141,12 +142,11 @@ def api_filter():
 
     return jsonify(results)
 
+# Endpoint pentru adaugarea unei carti
 @app.route('/api/v2/resources/books', methods=['POST'])
 def add_book():
-    
-    # Receives the data in JSON format in a HTTP POST request
     if not request.is_json:
-        return "<p>The content isn't of type JSON<\p>"
+        return "<p>The content isn't of type JSON</p>"
 
     content = request.get_json()
     title = content.get('title')
@@ -154,17 +154,48 @@ def add_book():
     published = content.get('published')
     first_sentence = content.get('first_sentence')
 
-    # Save the data in db
-    db_path = os.path.join('db', 'books.db')    
-    conn = sqlite3.connect(db_path)
-    query = f'INSERT INTO books (title, author, published, first_sentence) \
-              VALUES ("{title}", "{author}", "{published}", "{first_sentence}");'
+    client = bigquery.Client()
+    table_id = "projectcloudmasterid.books.books"
 
-    cur = conn.cursor()
-    cur.execute(query)
-    conn.commit()
+    rows_to_insert = [
+        {
+            "title": title,
+            "author": author,
+            "published": published,
+            "first_sentence": first_sentence
+        }
+    ]
+
+    errors = client.insert_rows_json(table_id, rows_to_insert)
+    if errors == []:
+        return jsonify(request.get_json())
+    else:
+        return jsonify({"errors": errors}), 400
+        
+# @app.route('/api/v2/resources/books', methods=['POST'])
+# def add_book():
     
-    return jsonify(request.get_json())
+#     # Receives the data in JSON format in a HTTP POST request
+#     if not request.is_json:
+#         return "<p>The content isn't of type JSON<\p>"
+
+#     content = request.get_json()
+#     title = content.get('title')
+#     author = content.get('author')
+#     published = content.get('published')
+#     first_sentence = content.get('first_sentence')
+
+#     # Save the data in db
+#     db_path = os.path.join('db', 'books.db')    
+#     conn = sqlite3.connect(db_path)
+#     query = f'INSERT INTO books (title, author, published, first_sentence) \
+#               VALUES ("{title}", "{author}", "{published}", "{first_sentence}");'
+
+#     cur = conn.cursor()
+#     cur.execute(query)
+#     conn.commit()
+    
+#     return jsonify(request.get_json())
 
 
 # A method that runs the application server.
