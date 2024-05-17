@@ -1,0 +1,7 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy']
+
+  - name: 'python'
+    entrypoint: 'python3'
+    args: ['init_db.py']
