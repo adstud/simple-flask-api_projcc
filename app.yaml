@@ -20,7 +20,3 @@ resources:
   memory_gb: 0.5
   disk_size_gb: 10
 
-# Add a post-deploy script
-post_deploy:
-  - name: load-data
-    entrypoint: python3 init_db.py
