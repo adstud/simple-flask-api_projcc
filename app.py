@@ -7,11 +7,11 @@ from google.cloud import bigquery
 # Init app
 app = Flask(__name__)
 
-def dict_factory(cursor, row):
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
+# def dict_factory(cursor, row):
+#     d = {}
+#     for idx, col in enumerate(cursor.description):
+#         d[col[0]] = row[idx]
+#     return d
 
 # Flask maps HTTP requests to Python functions.
 # The process of mapping URLs to functions is called routing.
