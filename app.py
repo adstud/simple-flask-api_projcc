@@ -149,11 +149,13 @@ def add_book():
         return "<p>The content isn't of type JSON</p>"
 
     content = request.get_json()
-    first_item = content[0]
-    title = first_item.get('title')
-    author = first_item.get('author')
-    published = first_item.get('published')
-    first_sentence = first_item.get('first_sentence')
+    title = content.get('title')
+    author = content.get('author')
+    published = content.get('published')
+    first_sentence = content.get('first_sentence')
+
+    if not all([title, author, published, first_sentence]):
+        return jsonify({"error": "Missing required fields"}), 400
 
     client = bigquery.Client()
     table_id = "projectcloudmasterid.books.books"
@@ -168,8 +170,8 @@ def add_book():
     ]
 
     errors = client.insert_rows_json(table_id, rows_to_insert)
-    if errors == []:
-        return jsonify(request.get_json())
+    if not errors:
+        return jsonify({"message": "Book added successfully"}), 201
     else:
         return jsonify({"errors": errors}), 400
         
