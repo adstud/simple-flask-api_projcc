@@ -148,11 +148,12 @@ def add_book():
     if not request.is_json:
         return "<p>The content isn't of type JSON</p>"
 
-    content = request.json
-    title = content.get('title')
-    author = content.get('author')
-    published = content.get('published')
-    first_sentence = content.get('first_sentence')
+    content = request.get_json()
+    first_item = content[0]
+    title = first_item.get('title')
+    author = first_item.get('author')
+    published = first_item.get('published')
+    first_sentence = first_item.get('first_sentence')
 
     client = bigquery.Client()
     table_id = "projectcloudmasterid.books.books"
