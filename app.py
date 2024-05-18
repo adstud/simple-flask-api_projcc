@@ -4,7 +4,7 @@ import os
 from google.cloud import bigquery
 
 
-# Init app
+# Initializeaza app
 app = Flask(__name__)
 
 # def dict_factory(cursor, row):
