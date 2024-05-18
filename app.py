@@ -15,21 +15,21 @@ app = Flask(__name__)
 
 # Flask maps HTTP requests to Python functions.
 # The process of mapping URLs to functions is called routing.
-@app.route('/', methods=['GET'])
-def home():
-    return "<h1>Distant Reading Archive</h1><p>This is a prototype API</p>"
+# @app.route('/', methods=['GET'])
+# def home():
+#     return "<h1>Distant Reading Archive</h1><p>This is a prototype API</p>"
 
-# A route to return all of available entries i our catalog.
-@app.route('/api/v2/resources/books/all', methods=['GET'])
-def api_all():
-    db_path = os.path.join('db', 'books.db')    
-    conn = sqlite3.connect(db_path)
-    # returns items from the database as dictionaries rather than lists
-    conn.row_factory = dict_factory
-    cur = conn.cursor()
-    all_books = cur.execute('SELECT * FROM books;').fetchall()
+# # A route to return all of available entries i our catalog.
+# @app.route('/api/v2/resources/books/all', methods=['GET'])
+# def api_all():
+#     db_path = os.path.join('db', 'books.db')    
+#     conn = sqlite3.connect(db_path)
+#     # returns items from the database as dictionaries rather than lists
+#     conn.row_factory = dict_factory
+#     cur = conn.cursor()
+#     all_books = cur.execute('SELECT * FROM books;').fetchall()
 
-    return jsonify(all_books)
+#     return jsonify(all_books)
 
 # Endpoint pentru obținerea tuturor cărților din BigQuery
 @app.route('/api/v2/resources/bigquery-data', methods=['GET'])
