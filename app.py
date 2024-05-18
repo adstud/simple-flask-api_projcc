@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import sqlite3
+# import sqlite3
 import os
 from google.cloud import bigquery
 
