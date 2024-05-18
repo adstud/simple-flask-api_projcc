@@ -148,7 +148,7 @@ def add_book():
     if not request.is_json:
         return "<p>The content isn't of type JSON</p>"
 
-    content = request.get_json()
+    content = request.json
     title = content.get('title')
     author = content.get('author')
     published = content.get('published')
