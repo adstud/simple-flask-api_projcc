@@ -6,7 +6,7 @@
 #     entrypoint: 'python3'
 #     args: ['init_db.py']
 steps:
-  # Pasul 1: Construiește imaginea Docker
+  # Pasul 01: Construiește imaginea Docker
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/simple-flask-api', '.']
 
