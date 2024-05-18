@@ -104,43 +104,43 @@ def get_books_by_year():
 def page_not_found(e):
     return "<h1>404</h1><p>The resource could not be found</p>", 404
 
-#teoretic astea ar putea fi scoase
-@app.route('/api/v2/resources/books', methods=['GET'])
-def api_filter():
-    query_parameters = request.args
+# #teoretic astea ar putea fi scoase
+# @app.route('/api/v2/resources/books', methods=['GET'])
+# def api_filter():
+#     query_parameters = request.args
 
-    id = query_parameters.get('id')
-    published = query_parameters.get('published')
-    author = query_parameters.get('author')
+#     id = query_parameters.get('id')
+#     published = query_parameters.get('published')
+#     author = query_parameters.get('author')
 
-    query = 'SELECT * FROM books WHERE'
-    to_filter = []
+#     query = 'SELECT * FROM books WHERE'
+#     to_filter = []
 
-    if id:
-        query += ' id=? AND'
-        to_filter.append(id)
+#     if id:
+#         query += ' id=? AND'
+#         to_filter.append(id)
     
-    if published:
-        query += ' published=? AND'
-        to_filter.append(published)
+#     if published:
+#         query += ' published=? AND'
+#         to_filter.append(published)
 
-    if author:
-        query += ' author=? AND'
-        to_filter.append(author)
+#     if author:
+#         query += ' author=? AND'
+#         to_filter.append(author)
 
-    if not(id or published or author):
-        return page_not_found(404)
+#     if not(id or published or author):
+#         return page_not_found(404)
 
-    query = query[:-4] + ';'
+#     query = query[:-4] + ';'
 
-    db_path = os.path.join('db', 'books.db')    
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = dict_factory
-    cur = conn.cursor()
+#     db_path = os.path.join('db', 'books.db')    
+#     conn = sqlite3.connect(db_path)
+#     conn.row_factory = dict_factory
+#     cur = conn.cursor()
 
-    results = cur.execute(query, to_filter).fetchall()
+#     results = cur.execute(query, to_filter).fetchall()
 
-    return jsonify(results)
+#     return jsonify(results)
 
 # Endpoint pentru adaugarea unei carti
 @app.route('/api/v2/resources/books', methods=['POST'])
