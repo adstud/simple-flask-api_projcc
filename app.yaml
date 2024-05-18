@@ -1,22 +1,39 @@
-runtime: python39
-entrypoint: gunicorn -b :$PORT app:app
+# runtime: python39
+# entrypoint: gunicorn -b :$PORT app:app
+
+# env_variables:
+#   GOOGLE_CLOUD_PROJECT: "projectcloudmasterid"
+
+# handlers:
+# - url: /.*
+#   script: auto
+
+# env: standard
+# instance_class: F1
+
+# automatic_scaling:
+#   min_instances: 1
+#   max_instances: 2
+
+# resources:
+#   cpu: 1
+#   memory_gb: 0.5
+#   disk_size_gb: 10
+
+runtime: custom
+env: flex
 
 env_variables:
   GOOGLE_CLOUD_PROJECT: "projectcloudmasterid"
 
-handlers:
-- url: /.*
-  script: auto
-
-env: standard
-instance_class: F1
-
-automatic_scaling:
-  min_instances: 1
-  max_instances: 2
+manual_scaling:
+  instances: 1
 
 resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
 
+network:
+  forwarded_ports:
+    - 8080:8080
