@@ -1,17 +1,17 @@
-#c Specify the base image
+# Folosim o imagine de bază Python
 FROM python:3.9-slim
 
-# Set the working directory inside the container
+# Setăm directorul de lucru în container
 WORKDIR /app
 
-# Copy the dependencies file to the working directory
+# Copiem fișierele de dependențe în container
 COPY requirements.txt .
 
-# Install the dependencies
+# Instalăm dependențele
 RUN pip install -r requirements.txt
 
-# Copy the content of the local src directory to the working directory
+# Copiem restul codului în container
 COPY . .
 
-# Command to run the Flask application
+# Definim comanda de rulare a aplicației
 CMD ["python", "app.py"]
