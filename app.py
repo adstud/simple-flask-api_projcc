@@ -15,9 +15,9 @@ app = Flask(__name__)
 
 # Flask maps HTTP requests to Python functions.
 # The process of mapping URLs to functions is called routing.
-# @app.route('/', methods=['GET'])
-# def home():
-#     return "<h1>Distant Reading Archive</h1><p>This is a prototype API</p>"
+@app.route('/', methods=['GET'])
+def home():
+    return "<h1>Distant Reading Archive</h1><p>This is a prototype API</p>"
 
 # # A route to return all of available entries i our catalog.
 # @app.route('/api/v2/resources/books/all', methods=['GET'])
