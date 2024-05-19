@@ -36,7 +36,7 @@ def home():
 def get_bigquery_data():
     client = bigquery.Client()
     query = """
-        SELECT * FROM `projectcloudmasterid.books.books`
+        SELECT * FROM `proiectccrefacut.booksr.booksr`
     """
     query_job = client.query(query)  # Execută interogarea
     results = query_job.result()  # Așteaptă finalizarea interogării
@@ -57,7 +57,7 @@ def get_books_by_author():
 
     client = bigquery.Client()
     query = f"""
-        SELECT * FROM `projectcloudmasterid.books.books`
+        SELECT * FROM `proiectccrefacut.booksr.booksr`
         WHERE author = '{author}'
     """
     query_job = client.query(query)
@@ -81,7 +81,7 @@ def get_books_by_year():
 
     client = bigquery.Client()
     query = """
-        SELECT * FROM `projectcloudmasterid.books.books`
+        SELECT * FROM `proiectccrefacut.booksr.booksr`
         WHERE CAST(published AS STRING) LIKE @published_year
     """
     job_config = bigquery.QueryJobConfig(
@@ -112,7 +112,7 @@ def page_not_found(e):
 #     published = query_parameters.get('published')
 #     author = query_parameters.get('author')
 
-#     query = 'SELECT * FROM books WHERE'
+#     query = 'SELECT * FROM booksr WHERE'
 #     to_filter = []
 
 #     if id:
@@ -157,7 +157,7 @@ def add_book():
         return jsonify({"error": "Missing required fields"}), 400
 
     client = bigquery.Client()
-    table_id = "projectcloudmasterid.books.books"
+    table_id = "proiectccrefacut.booksr.booksr"
 
     rows_to_insert = [
         {
