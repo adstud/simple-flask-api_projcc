@@ -13,5 +13,5 @@ RUN pip install -r requirements.txt
 # Copiem restul codului în container
 COPY . .
 
-# Definim comanda de rulare a aplicației
-CMD ["python", "app.py"]
+# Definim comanda de rulare a aplicației folosind gunicorn
+CMD ["gunicorn", "-b", ":$PORT", "app:app"]
