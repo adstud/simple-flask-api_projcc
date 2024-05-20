@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Definim comanda de rulare a aplicației folosind gunicorn
-CMD ["gunicorn", "-b", ":$PORT", "app:app"]
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
